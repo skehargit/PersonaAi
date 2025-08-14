@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { FaMicrophone, FaPaperPlane, FaPaperclip } from "react-icons/fa";
+import { FaPaperPlane } from "react-icons/fa";
 import { motion } from "framer-motion";
 import axios from "axios";
 
@@ -16,17 +16,17 @@ const Chatbot = () => {
   }, [messages]);
   const handleSendMessage = async () => {
     if (!inputMessage.trim()) return;
-  
+
     const newMessage = { id: Date.now(), text: inputMessage, sender: "user" };
     setMessages((prev) => [...prev, newMessage]);
     setInputMessage("");
     setIsTyping(true);
-  
+
     try {
-      const res = await axios.post("http://localhost:5000/api/chat", {
+      const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/chat`, {
         message: inputMessage,
       });
-  
+
       setMessages((prev) => [
         ...prev,
         { id: Date.now() + 1, text: res.data.reply, sender: "bot" },
@@ -38,7 +38,7 @@ const Chatbot = () => {
         { id: Date.now() + 1, text: "Error getting response", sender: "bot" },
       ]);
     }
-  
+
     setIsTyping(false);
   };
   return (
@@ -54,9 +54,11 @@ const Chatbot = () => {
               <img src="/hitesh.png" alt="hitesh" className="w-full h-full" />
             </div>
             <div>
-              <h1 className="text-[#F0F0F0] text-xl font-bold">Hitesh Choudhary</h1>
+              <h1 className="text-[#F0F0F0] text-xl font-bold">
+                Hitesh Choudhary
+              </h1>
               <p className="text-[#F0F0F0]/60 text-sm">
-              Chalo dosto, thodi baatein karte hain coding aur chai ke saath!
+                Chalo dosto, thodi baatein karte hain coding aur chai ke saath!
               </p>
             </div>
           </div>
@@ -103,7 +105,6 @@ const Chatbot = () => {
 
         <div className="p-6 border-t border-white/10 bg-black/20">
           <div className="flex items-center space-x-4">
-            
             <input
               type="text"
               value={inputMessage}
